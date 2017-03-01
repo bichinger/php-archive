@@ -1,12 +1,10 @@
 <?php
 
-use splitbrain\PHPArchive\Zip;
-
 class Zip_TestCase extends PHPUnit_Framework_TestCase
 {
 
     /**
-     * @expectedException splitbrain\PHPArchive\ArchiveIOException
+     * @expectedException ArchiveIOException
      */
     public function test_missing()
     {

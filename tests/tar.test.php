@@ -1,7 +1,5 @@
 <?php
 
-use splitbrain\PHPArchive\Tar;
-
 class Tar_TestCase extends PHPUnit_Framework_TestCase
 {
     /**
@@ -43,7 +41,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException splitbrain\PHPArchive\ArchiveIOException
+     * @expectedException ArchiveIOException
      */
     public function test_missing()
     {

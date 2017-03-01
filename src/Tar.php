@@ -1,7 +1,5 @@
 <?php
 
-namespace splitbrain\PHPArchive;
-
 /**
  * Class Tar
  *
