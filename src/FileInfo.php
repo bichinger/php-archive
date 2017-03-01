@@ -45,7 +45,7 @@ class FileInfo
      */
     public static function fromPath($path, $as = '')
     {
-        clearstatcache(false, $path);
+        clearstatcache();
 
         if (!file_exists($path)) {
             throw new FileInfoException("$path does not exist");
@@ -336,6 +336,6 @@ class FileInfo
     }
 }
 
-class FileInfoException extends \Exception
+class FileInfoException extends Exception
 {
 }
