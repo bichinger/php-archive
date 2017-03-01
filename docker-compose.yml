@@ -1,0 +1,8 @@
+version: '2.0'
+services:
+  php-archive:
+    image: yappabe/apache-php:5.2
+    volumes:
+      - ./:/var/www/app/html
+    ports:
+     - "8080:80"
