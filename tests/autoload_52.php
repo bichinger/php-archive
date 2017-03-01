@@ -12,7 +12,7 @@
     addIncludePath(dirname(__FILE__).'/../vendor/phpunit/phpunit-php52');
 
     require(dirname(__FILE__)."/../vendor/phpunit/phpunit-php52/PHPUnit/Autoload.php");
-    require(dirname(__FILE__)."/../src/Archive.php");
-    require(dirname(__FILE__)."/../src/FileInfo.php");
-    require(dirname(__FILE__)."/../src/Tar.php");
-    require(dirname(__FILE__)."/../src/Zip.php");
+    require(dirname(__FILE__)."/../src/SplitbrainArchive.php");
+    require(dirname(__FILE__)."/../src/SplitbrainFileInfo.php");
+    require(dirname(__FILE__)."/../src/SplitbrainTar.php");
+    require(dirname(__FILE__)."/../src/SplitbrainZip.php");

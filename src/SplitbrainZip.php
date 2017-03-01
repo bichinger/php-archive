@@ -11,7 +11,7 @@
  * @package splitbrain\PHPArchive
  * @license MIT
  */
-class Zip extends Archive
+class SplitbrainZip extends SplitbrainArchive
 {
 
     protected $file = '';
@@ -34,7 +34,7 @@ class Zip extends Archive
      * @param int $type  Type of compression to use ignored for ZIP
      * @return mixed
      */
-    public function setCompression($level = 9, $type = Archive::COMPRESS_AUTO)
+    public function setCompression($level = 9, $type = SplitbrainArchive::COMPRESS_AUTO)
     {
         $this->complevel = $level;
     }
@@ -64,7 +64,7 @@ class Zip extends Archive
      * Reopen the file with open() again if you want to do additional operations
      *
      * @throws ArchiveIOException
-     * @return FileInfo[]
+     * @return SplitbrainFileInfo[]
      */
     public function contents()
     {
@@ -107,7 +107,7 @@ class Zip extends Archive
      * @param string     $exclude a regular expression of files to exclude
      * @param string     $include a regular expression of files to include
      * @throws ArchiveIOException
-     * @return FileInfo[]
+     * @return SplitbrainFileInfo[]
      */
     function extract($outdir, $strip = '', $exclude = '', $include = '')
     {
@@ -262,7 +262,7 @@ class Zip extends Archive
      * Add a file to the current ZIP archive using an existing file in the filesystem
      *
      * @param string          $file     path to the original file
-     * @param string|FileInfo $fileinfo either the name to us in archive (string) or a FileInfo oject with all meta data, empty to take from original
+     * @param string|SplitbrainFileInfo $fileinfo either the name to us in archive (string) or a FileInfo oject with all meta data, empty to take from original
      * @throws ArchiveIOException
      */
 
@@ -270,13 +270,13 @@ class Zip extends Archive
      * Add a file to the current archive using an existing file in the filesystem
      *
      * @param string          $file     path to the original file
-     * @param string|FileInfo $fileinfo either the name to us in archive (string) or a FileInfo oject with all meta data, empty to take from original
+     * @param string|SplitbrainFileInfo $fileinfo either the name to us in archive (string) or a FileInfo oject with all meta data, empty to take from original
      * @throws ArchiveIOException
      */
     public function addFile($file, $fileinfo = '')
     {
         if (is_string($fileinfo)) {
-            $fileinfo = FileInfo::fromPath($file, $fileinfo);
+            $fileinfo = SplitbrainFileInfo::fromPath($file, $fileinfo);
         }
 
         if ($this->closed) {
@@ -295,14 +295,14 @@ class Zip extends Archive
     /**
      * Add a file to the current TAR archive using the given $data as content
      *
-     * @param string|FileInfo $fileinfo either the name to us in archive (string) or a FileInfo oject with all meta data
+     * @param string|SplitbrainFileInfo $fileinfo either the name to us in archive (string) or a FileInfo oject with all meta data
      * @param string          $data     binary content of the file to add
      * @throws ArchiveIOException
      */
     public function addData($fileinfo, $data)
     {
         if (is_string($fileinfo)) {
-            $fileinfo = new FileInfo($fileinfo);
+            $fileinfo = new SplitbrainFileInfo($fileinfo);
         }
 
         if ($this->closed) {
@@ -561,11 +561,11 @@ class Zip extends Archive
      * Create fileinfo object from header data
      *
      * @param $header
-     * @return FileInfo
+     * @return SplitbrainFileInfo
      */
     protected function header2fileinfo($header)
     {
-        $fileinfo = new FileInfo();
+        $fileinfo = new SplitbrainFileInfo();
         $fileinfo->setPath($header['filename']);
         $fileinfo->setSize($header['size']);
         $fileinfo->setCompressedSize($header['compressed_size']);

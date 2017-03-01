@@ -8,7 +8,7 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
      */
     public function test_missing()
     {
-        $tar = new Zip();
+        $tar = new SplitbrainZip();
         $tar->open('nope.zip');
     }
 
@@ -20,7 +20,7 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
      */
     public function test_createdynamic()
     {
-        $zip = new Zip();
+        $zip = new SplitbrainZip();
 
         $dir  = dirname(__FILE__).'/zip';
         $tdir = ltrim($dir, '/');
@@ -59,7 +59,7 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
      */
     public function test_createfile()
     {
-        $zip = new Zip();
+        $zip = new SplitbrainZip();
 
         $dir  = dirname(__FILE__).'/zip';
         $tdir = ltrim($dir, '/');
@@ -102,7 +102,7 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
     {
         $dir = dirname(__FILE__).'/zip';
 
-        $zip  = new Zip();
+        $zip  = new SplitbrainZip();
         $file = "$dir/test.zip";
 
         $zip->open($file);
@@ -126,7 +126,7 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
         $archive = sys_get_temp_dir() . '/dwziptest' . md5(time()) . '.zip';
         $extract = sys_get_temp_dir() . '/dwziptest' . md5(time() + 1);
 
-        $zip = new Zip();
+        $zip = new SplitbrainZip();
         $zip->create($archive);
         foreach($input as $path) {
             $file = basename($path);
@@ -135,13 +135,13 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
         $zip->close();
         $this->assertFileExists($archive);
 
-        $zip = new Zip();
+        $zip = new SplitbrainZip();
         $zip->open($archive);
-        $zip->extract($extract, '', '/FileInfo\\.php/', '/.*\\.php/');
+        $zip->extract($extract, '', '/SplitbrainFileInfo\\.php/', '/.*\\.php/');
 
-        $this->assertFileExists("$extract/Tar.php");
-        $this->assertFileExists("$extract/Zip.php");
-        $this->assertFileNotExists("$extract/FileInfo.php");
+        $this->assertFileExists("$extract/SplitbrainTar.php");
+        $this->assertFileExists("$extract/SplitbrainZip.php");
+        $this->assertFileNotExists("$extract/SplitbrainFileInfo.php");
 
         self::rdelete($extract);
         unlink($archive);
@@ -156,7 +156,7 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
         $dir = dirname(__FILE__).'/zip';
         $out = sys_get_temp_dir().'/dwziptest'.md5(time());
 
-        $zip  = new Zip();
+        $zip  = new SplitbrainZip();
         $file = "$dir/test.zip";
 
         $zip->open($file);
@@ -185,7 +185,7 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
         $dir = dirname(__FILE__).'/zip';
         $out = sys_get_temp_dir().'/dwziptest'.md5(time());
 
-        $zip  = new Zip();
+        $zip  = new SplitbrainZip();
         $file = "$dir/test.zip";
 
         $zip->open($file);
@@ -210,7 +210,7 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
         $dir = dirname(__FILE__).'/zip';
         $out = sys_get_temp_dir().'/dwziptest'.md5(time());
 
-        $zip  = new Zip();
+        $zip  = new SplitbrainZip();
         $file = "$dir/test.zip";
 
         $zip->open($file);
@@ -235,7 +235,7 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
         $dir = dirname(__FILE__).'/zip';
         $out = sys_get_temp_dir().'/dwziptest'.md5(time());
 
-        $zip  = new Zip();
+        $zip  = new SplitbrainZip();
         $file = "$dir/test.zip";
 
         $zip->open($file);
@@ -259,7 +259,7 @@ class Zip_TestCase extends PHPUnit_Framework_TestCase
         $dir = dirname(__FILE__).'/zip';
         $out = sys_get_temp_dir().'/dwziptest'.md5(time());
 
-        $zip  = new Zip();
+        $zip  = new SplitbrainZip();
         $file = "$dir/test.zip";
 
         $zip->open($file);

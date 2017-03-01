@@ -11,11 +11,11 @@
  * @package splitbrain\PHPArchive
  * @license MIT
  */
-class Tar extends Archive
+class SplitbrainTar extends SplitbrainArchive
 {
 
     protected $file = '';
-    protected $comptype = Archive::COMPRESS_AUTO;
+    protected $comptype = SplitbrainArchive::COMPRESS_AUTO;
     protected $complevel = 9;
     protected $fh;
     protected $memory = '';
@@ -29,13 +29,13 @@ class Tar extends Archive
      * @param int $type  Type of compression to use (use COMPRESS_* constants)
      * @return mixed
      */
-    public function setCompression($level = 9, $type = Archive::COMPRESS_AUTO)
+    public function setCompression($level = 9, $type = SplitbrainArchive::COMPRESS_AUTO)
     {
         $this->compressioncheck($type);
         $this->comptype  = $type;
         $this->complevel = $level;
-        if($level == 0) $this->comptype = Archive::COMPRESS_NONE;
-        if($type == Archive::COMPRESS_NONE) $this->complevel = 0;
+        if($level == 0) $this->comptype = SplitbrainArchive::COMPRESS_NONE;
+        if($type == SplitbrainArchive::COMPRESS_NONE) $this->complevel = 0;
     }
 
     /**
@@ -49,14 +49,14 @@ class Tar extends Archive
         $this->file = $file;
 
         // update compression to mach file
-        if ($this->comptype == Tar::COMPRESS_AUTO) {
+        if ($this->comptype == SplitbrainTar::COMPRESS_AUTO) {
             $this->setCompression($this->complevel, $this->filetype($file));
         }
 
         // open file handles
-        if ($this->comptype === Archive::COMPRESS_GZIP) {
+        if ($this->comptype === SplitbrainArchive::COMPRESS_GZIP) {
             $this->fh = @gzopen($this->file, 'rb');
-        } elseif ($this->comptype === Archive::COMPRESS_BZIP) {
+        } elseif ($this->comptype === SplitbrainArchive::COMPRESS_BZIP) {
             $this->fh = @bzopen($this->file, 'r');
         } else {
             $this->fh = @fopen($this->file, 'rb');
@@ -205,13 +205,13 @@ class Tar extends Archive
 
         if ($this->file) {
             // determine compression
-            if ($this->comptype == Archive::COMPRESS_AUTO) {
+            if ($this->comptype == SplitbrainArchive::COMPRESS_AUTO) {
                 $this->setCompression($this->complevel, $this->filetype($file));
             }
 
-            if ($this->comptype === Archive::COMPRESS_GZIP) {
+            if ($this->comptype === SplitbrainArchive::COMPRESS_GZIP) {
                 $this->fh = @gzopen($this->file, 'wb'.$this->complevel);
-            } elseif ($this->comptype === Archive::COMPRESS_BZIP) {
+            } elseif ($this->comptype === SplitbrainArchive::COMPRESS_BZIP) {
                 $this->fh = @bzopen($this->file, 'w');
             } else {
                 $this->fh = @fopen($this->file, 'wb');
@@ -235,7 +235,7 @@ class Tar extends Archive
     public function addFile($file, $fileinfo = '')
     {
         if (is_string($fileinfo)) {
-            $fileinfo = FileInfo::fromPath($file, $fileinfo);
+            $fileinfo = SplitbrainFileInfo::fromPath($file, $fileinfo);
         }
 
         if ($this->closed) {
@@ -275,7 +275,7 @@ class Tar extends Archive
     public function addData($fileinfo, $data)
     {
         if (is_string($fileinfo)) {
-            $fileinfo = new FileInfo($fileinfo);
+            $fileinfo = new SplitbrainFileInfo($fileinfo);
         }
 
         if ($this->closed) {
@@ -316,9 +316,9 @@ class Tar extends Archive
 
         // close file handles
         if ($this->file) {
-            if ($this->comptype === Archive::COMPRESS_GZIP) {
+            if ($this->comptype === SplitbrainArchive::COMPRESS_GZIP) {
                 gzclose($this->fh);
-            } elseif ($this->comptype === Archive::COMPRESS_BZIP) {
+            } elseif ($this->comptype === SplitbrainArchive::COMPRESS_BZIP) {
                 bzclose($this->fh);
             } else {
                 fclose($this->fh);
@@ -341,14 +341,14 @@ class Tar extends Archive
     {
         $this->close();
 
-        if ($this->comptype === Archive::COMPRESS_AUTO) {
-            $this->comptype = Archive::COMPRESS_NONE;
+        if ($this->comptype === SplitbrainArchive::COMPRESS_AUTO) {
+            $this->comptype = SplitbrainArchive::COMPRESS_NONE;
         }
 
-        if ($this->comptype === Archive::COMPRESS_GZIP) {
+        if ($this->comptype === SplitbrainArchive::COMPRESS_GZIP) {
             return gzcompress($this->memory, $this->complevel);
         }
-        if ($this->comptype === Archive::COMPRESS_BZIP) {
+        if ($this->comptype === SplitbrainArchive::COMPRESS_BZIP) {
             return bzcompress($this->memory);
         }
         return $this->memory;
@@ -365,7 +365,7 @@ class Tar extends Archive
      */
     public function save($file)
     {
-        if ($this->comptype === Archive::COMPRESS_AUTO) {
+        if ($this->comptype === SplitbrainArchive::COMPRESS_AUTO) {
             $this->setCompression($this->complevel, $this->filetype($file));
         }
 
@@ -382,9 +382,9 @@ class Tar extends Archive
      */
     protected function readbytes($length)
     {
-        if ($this->comptype === Archive::COMPRESS_GZIP) {
+        if ($this->comptype === SplitbrainArchive::COMPRESS_GZIP) {
             return @gzread($this->fh, $length);
-        } elseif ($this->comptype === Archive::COMPRESS_BZIP) {
+        } elseif ($this->comptype === SplitbrainArchive::COMPRESS_BZIP) {
             return @bzread($this->fh, $length);
         } else {
             return @fread($this->fh, $length);
@@ -403,9 +403,9 @@ class Tar extends Archive
         if (!$this->file) {
             $this->memory .= $data;
             $written = strlen($data);
-        } elseif ($this->comptype === Archive::COMPRESS_GZIP) {
+        } elseif ($this->comptype === SplitbrainArchive::COMPRESS_GZIP) {
             $written = @gzwrite($this->fh, $data);
-        } elseif ($this->comptype === Archive::COMPRESS_BZIP) {
+        } elseif ($this->comptype === SplitbrainArchive::COMPRESS_BZIP) {
             $written = @bzwrite($this->fh, $data);
         } else {
             $written = @fwrite($this->fh, $data);
@@ -425,9 +425,9 @@ class Tar extends Archive
      */
     function skipbytes($bytes)
     {
-        if ($this->comptype === Archive::COMPRESS_GZIP) {
+        if ($this->comptype === SplitbrainArchive::COMPRESS_GZIP) {
             @gzseek($this->fh, $bytes, SEEK_CUR);
-        } elseif ($this->comptype === Archive::COMPRESS_BZIP) {
+        } elseif ($this->comptype === SplitbrainArchive::COMPRESS_BZIP) {
             // there is no seek in bzip2, we simply read on
             // bzread allows to read a max of 8kb at once
             while($bytes) {
@@ -445,7 +445,7 @@ class Tar extends Archive
      *
      * @param FileInfo $fileinfo
      */
-    protected function writeFileHeader(FileInfo $fileinfo)
+    protected function writeFileHeader(SplitbrainFileInfo $fileinfo)
     {
         $this->writeRawFileHeader(
             $fileinfo->getPath(),
@@ -590,7 +590,7 @@ class Tar extends Archive
      */
     protected function header2fileinfo($header)
     {
-        $fileinfo = new FileInfo();
+        $fileinfo = new SplitbrainFileInfo();
         $fileinfo->setPath($header['filename']);
         $fileinfo->setMode($header['perm']);
         $fileinfo->setUid($header['uid']);
@@ -612,11 +612,11 @@ class Tar extends Archive
      */
     protected function compressioncheck($comptype)
     {
-        if ($comptype === Archive::COMPRESS_GZIP && !function_exists('gzopen')) {
-            throw new ArchiveIllegalCompressionException('No gzip support available');
+        if ($comptype === SplitbrainArchive::COMPRESS_GZIP && !function_exists('gzopen')) {
+            throw new SplitbrainArchiveIllegalCompressionException('No gzip support available');
         }
 
-        if ($comptype === Archive::COMPRESS_BZIP && !function_exists('bzopen')) {
+        if ($comptype === SplitbrainArchive::COMPRESS_BZIP && !function_exists('bzopen')) {
             throw new ArchiveIllegalCompressionException('No bzip2 support available');
         }
     }
@@ -640,18 +640,18 @@ class Tar extends Archive
             $magic = fread($fh, 5);
             fclose($fh);
 
-            if(strpos($magic, "\x42\x5a") === 0) return Archive::COMPRESS_BZIP;
-            if(strpos($magic, "\x1f\x8b") === 0) return Archive::COMPRESS_GZIP;
+            if(strpos($magic, "\x42\x5a") === 0) return SplitbrainArchive::COMPRESS_BZIP;
+            if(strpos($magic, "\x1f\x8b") === 0) return SplitbrainArchive::COMPRESS_GZIP;
         }
 
         // otherwise rely on file name
         $file = strtolower($file);
         if (substr($file, -3) == '.gz' || substr($file, -4) == '.tgz') {
-            return Archive::COMPRESS_GZIP;
+            return SplitbrainArchive::COMPRESS_GZIP;
         } elseif (substr($file, -4) == '.bz2' || substr($file, -4) == '.tbz') {
-            return Archive::COMPRESS_BZIP;
+            return SplitbrainArchive::COMPRESS_BZIP;
         }
 
-        return Archive::COMPRESS_NONE;
+        return SplitbrainArchive::COMPRESS_NONE;
     }
 }

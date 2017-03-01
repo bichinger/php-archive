@@ -1,5 +1,5 @@
 <?php
-abstract class Archive
+abstract class SplitbrainArchive
 {
 
     const COMPRESS_AUTO = -1;
@@ -14,7 +14,7 @@ abstract class Archive
      * @param int $type  Type of compression to use (use COMPRESS_* constants)
      * @return mixed
      */
-    abstract public function setCompression($level = 9, $type = Archive::COMPRESS_AUTO);
+    abstract public function setCompression($level = 9, $type = SplitbrainArchive::COMPRESS_AUTO);
 
     /**
      * Open an existing archive file for reading
@@ -32,7 +32,7 @@ abstract class Archive
      * The archive is closed afer reading the contents, because rewinding is not possible in bzip2 streams.
      * Reopen the file with open() again if you want to do additional operations
      *
-     * @return FileInfo[]
+     * @return SplitbrainFileInfo[]
      */
     abstract public function contents();
 
@@ -75,7 +75,7 @@ abstract class Archive
      * Add a file to the current archive using an existing file in the filesystem
      *
      * @param string          $file     path to the original file
-     * @param string|FileInfo $fileinfo either the name to us in archive (string) or a FileInfo oject with all meta data, empty to take from original
+     * @param string|SplitbrainFileInfo $fileinfo either the name to us in archive (string) or a FileInfo oject with all meta data, empty to take from original
      * @throws ArchiveIOException
      */
     abstract public function addFile($file, $fileinfo = '');
@@ -83,7 +83,7 @@ abstract class Archive
     /**
      * Add a file to the current archive using the given $data as content
      *
-     * @param string|FileInfo $fileinfo either the name to us in archive (string) or a FileInfo oject with all meta data
+     * @param string|SplitbrainFileInfo $fileinfo either the name to us in archive (string) or a FileInfo oject with all meta data
      * @param string          $data     binary content of the file to add
      * @throws ArchiveIOException
      */

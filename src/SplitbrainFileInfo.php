@@ -9,7 +9,7 @@
  * @package splitbrain\PHPArchive
  * @license MIT
  */
-class FileInfo
+class SplitbrainFileInfo
 {
 
     protected $isdir = false;
@@ -41,7 +41,7 @@ class FileInfo
      * @param string $path path to a file on the local file system
      * @param string $as   optional path to use inside the archive
      * @throws FileInfoException
-     * @return FileInfo
+     * @return SplitbrainFileInfo
      */
     public static function fromPath($path, $as = '')
     {
@@ -52,7 +52,7 @@ class FileInfo
         }
 
         $stat = stat($path);
-        $file = new FileInfo();
+        $file = new SplitbrainFileInfo();
 
         $file->setPath($path);
         $file->setIsdir(is_dir($path));
@@ -285,7 +285,7 @@ class FileInfo
      * the prefix will be stripped. It is recommended to give prefixes with a trailing slash.
      *
      * @param  int|string $strip
-     * @return FileInfo
+     * @return SplitbrainFileInfo
      */
     public function strip($strip)
     {

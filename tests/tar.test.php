@@ -45,7 +45,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
      */
     public function test_missing()
     {
-        $tar = new Tar();
+        $tar = new SplitbrainTar();
         $tar->open('nope.tar');
     }
 
@@ -57,7 +57,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
      */
     public function test_createdynamic()
     {
-        $tar = new Tar();
+        $tar = new SplitbrainTar();
 
         $dir  = dirname(__FILE__).'/tar';
         $tdir = ltrim($dir, '/');
@@ -95,7 +95,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
      */
     public function test_createfile()
     {
-        $tar = new Tar();
+        $tar = new SplitbrainTar();
 
         $dir  = dirname(__FILE__).'/tar';
         $tdir = ltrim($dir, '/');
@@ -138,7 +138,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
         $dir = dirname(__FILE__).'/tar';
 
         foreach ($this->extensions as $ext) {
-            $tar  = new Tar();
+            $tar  = new SplitbrainTar();
             $file = "$dir/test.$ext";
 
             $tar->open($file);
@@ -163,7 +163,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
             $archive = sys_get_temp_dir() . '/dwtartest' . md5(time()) . '.' . $ext;
             $extract = sys_get_temp_dir() . '/dwtartest' . md5(time() + 1);
 
-            $tar = new Tar();
+            $tar = new SplitbrainTar();
             $tar->create($archive);
             foreach($input as $path) {
                 $file = basename($path);
@@ -172,13 +172,13 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
             $tar->close();
             $this->assertFileExists($archive);
 
-            $tar = new Tar();
+            $tar = new SplitbrainTar();
             $tar->open($archive);
-            $tar->extract($extract, '', '/FileInfo\\.php/', '/.*\\.php/');
+            $tar->extract($extract, '', '/SplitbrainFileInfo\\.php/', '/.*\\.php/');
 
-            $this->assertFileExists("$extract/Tar.php");
-            $this->assertFileExists("$extract/Zip.php");
-            $this->assertFileNotExists("$extract/FileInfo.php");
+            $this->assertFileExists("$extract/SplitbrainTar.php");
+            $this->assertFileExists("$extract/SplitbrainZip.php");
+            $this->assertFileNotExists("$extract/SplitbrainFileInfo.php");
 
             self::rdelete($extract);
             unlink($archive);
@@ -194,7 +194,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
         $out = sys_get_temp_dir().'/dwtartest'.md5(time());
 
         foreach ($this->extensions as $ext) {
-            $tar  = new Tar();
+            $tar  = new SplitbrainTar();
             $file = "$dir/test.$ext";
 
             $tar->open($file);
@@ -221,7 +221,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
         $out = sys_get_temp_dir().'/dwtartest'.md5(time());
 
         foreach ($this->extensions as $ext) {
-            $tar  = new Tar();
+            $tar  = new SplitbrainTar();
             $file = "$dir/test.$ext";
 
             $tar->open($file);
@@ -248,7 +248,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
         $out = sys_get_temp_dir().'/dwtartest'.md5(time());
 
         foreach ($this->extensions as $ext) {
-            $tar  = new Tar();
+            $tar  = new SplitbrainTar();
             $file = "$dir/test.$ext";
 
             $tar->open($file);
@@ -275,7 +275,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
         $out = sys_get_temp_dir().'/dwtartest'.md5(time());
 
         foreach ($this->extensions as $ext) {
-            $tar  = new Tar();
+            $tar  = new SplitbrainTar();
             $file = "$dir/test.$ext";
 
             $tar->open($file);
@@ -301,7 +301,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
         $out = sys_get_temp_dir().'/dwtartest'.md5(time());
 
         foreach ($this->extensions as $ext) {
-            $tar  = new Tar();
+            $tar  = new SplitbrainTar();
             $file = "$dir/test.$ext";
 
             $tar->open($file);
@@ -323,24 +323,24 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
      */
     public function test_filetype()
     {
-        $tar = new Tar();
-        $this->assertEquals(Tar::COMPRESS_NONE, $tar->filetype('foo'));
-        $this->assertEquals(Tar::COMPRESS_GZIP, $tar->filetype('foo.tgz'));
-        $this->assertEquals(Tar::COMPRESS_GZIP, $tar->filetype('foo.tGZ'));
-        $this->assertEquals(Tar::COMPRESS_GZIP, $tar->filetype('foo.tar.GZ'));
-        $this->assertEquals(Tar::COMPRESS_GZIP, $tar->filetype('foo.tar.gz'));
-        $this->assertEquals(Tar::COMPRESS_BZIP, $tar->filetype('foo.tbz'));
-        $this->assertEquals(Tar::COMPRESS_BZIP, $tar->filetype('foo.tBZ'));
-        $this->assertEquals(Tar::COMPRESS_BZIP, $tar->filetype('foo.tar.BZ2'));
-        $this->assertEquals(Tar::COMPRESS_BZIP, $tar->filetype('foo.tar.bz2'));
+        $tar = new SplitbrainTar();
+        $this->assertEquals(SplitbrainTar::COMPRESS_NONE, $tar->filetype('foo'));
+        $this->assertEquals(SplitbrainTar::COMPRESS_GZIP, $tar->filetype('foo.tgz'));
+        $this->assertEquals(SplitbrainTar::COMPRESS_GZIP, $tar->filetype('foo.tGZ'));
+        $this->assertEquals(SplitbrainTar::COMPRESS_GZIP, $tar->filetype('foo.tar.GZ'));
+        $this->assertEquals(SplitbrainTar::COMPRESS_GZIP, $tar->filetype('foo.tar.gz'));
+        $this->assertEquals(SplitbrainTar::COMPRESS_BZIP, $tar->filetype('foo.tbz'));
+        $this->assertEquals(SplitbrainTar::COMPRESS_BZIP, $tar->filetype('foo.tBZ'));
+        $this->assertEquals(SplitbrainTar::COMPRESS_BZIP, $tar->filetype('foo.tar.BZ2'));
+        $this->assertEquals(SplitbrainTar::COMPRESS_BZIP, $tar->filetype('foo.tar.bz2'));
 
         $dir = dirname(__FILE__).'/tar';
-        $this->assertEquals(Tar::COMPRESS_NONE, $tar->filetype("$dir/test.tar"));
-        $this->assertEquals(Tar::COMPRESS_GZIP, $tar->filetype("$dir/test.tgz"));
-        $this->assertEquals(Tar::COMPRESS_BZIP, $tar->filetype("$dir/test.tbz"));
-        $this->assertEquals(Tar::COMPRESS_NONE, $tar->filetype("$dir/test.tar.guess"));
-        $this->assertEquals(Tar::COMPRESS_GZIP, $tar->filetype("$dir/test.tgz.guess"));
-        $this->assertEquals(Tar::COMPRESS_BZIP, $tar->filetype("$dir/test.tbz.guess"));
+        $this->assertEquals(SplitbrainTar::COMPRESS_NONE, $tar->filetype("$dir/test.tar"));
+        $this->assertEquals(SplitbrainTar::COMPRESS_GZIP, $tar->filetype("$dir/test.tgz"));
+        $this->assertEquals(SplitbrainTar::COMPRESS_BZIP, $tar->filetype("$dir/test.tbz"));
+        $this->assertEquals(SplitbrainTar::COMPRESS_NONE, $tar->filetype("$dir/test.tar.guess"));
+        $this->assertEquals(SplitbrainTar::COMPRESS_GZIP, $tar->filetype("$dir/test.tgz.guess"));
+        $this->assertEquals(SplitbrainTar::COMPRESS_BZIP, $tar->filetype("$dir/test.tbz.guess"));
     }
 
     /**
@@ -352,7 +352,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
         $out = sys_get_temp_dir().'/dwtartest'.md5(time());
 
         foreach (array('ustar', 'gnu') as $format) {
-            $tar = new Tar();
+            $tar = new SplitbrainTar();
             $tar->open("$dir/longpath-$format.tgz");
             $tar->extract($out);
 
@@ -367,7 +367,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
     // FS#1442
     public function test_createlongfile()
     {
-        $tar = new Tar();
+        $tar = new SplitbrainTar();
         $tar->setCompression(0);
         $tmp = tempnam(sys_get_temp_dir(), 'dwtartest');
 
@@ -390,7 +390,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
 
     public function test_createlongpathustar()
     {
-        $tar = new Tar();
+        $tar = new SplitbrainTar();
         $tar->setCompression(0);
         $tmp = tempnam(sys_get_temp_dir(), 'dwtartest');
 
@@ -419,7 +419,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
 
     public function test_createlongpathgnu()
     {
-        $tar = new Tar();
+        $tar = new SplitbrainTar();
         $tar->setCompression(0);
         $tmp = tempnam(sys_get_temp_dir(), 'dwtartest');
 
@@ -455,7 +455,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
         $dir = dirname(__FILE__).'/tar';
         $out = sys_get_temp_dir().'/dwtartest'.md5(time());
 
-        $tar = new Tar();
+        $tar = new SplitbrainTar();
 
         $tar->open("$dir/tarbomb.tgz");
         $tar->extract($out);
@@ -475,7 +475,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
     public function test_zerofile()
     {
         $dir = dirname(__FILE__).'/tar';
-        $tar = new Tar();
+        $tar = new SplitbrainTar();
         $tar->setCompression(0);
         $tar->create();
         $tar->addFile("$dir/zero.txt", 'zero.txt');
@@ -486,7 +486,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
 
     public function test_zerodata()
     {
-        $tar = new Tar();
+        $tar = new SplitbrainTar();
         $tar->setCompression(0);
         $tar->create();
         $tar->addData('zero.txt', '');
@@ -501,7 +501,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
     public function test_blockfile()
     {
         $dir = dirname(__FILE__).'/tar';
-        $tar = new Tar();
+        $tar = new SplitbrainTar();
         $tar->setCompression(0);
         $tar->create();
         $tar->addFile("$dir/block.txt", 'block.txt');
@@ -512,7 +512,7 @@ class Tar_TestCase extends PHPUnit_Framework_TestCase
 
     public function test_blockdata()
     {
-        $tar = new Tar();
+        $tar = new SplitbrainTar();
         $tar->setCompression(0);
         $tar->create();
         $tar->addData('block.txt', str_pad('', 512, 'x'));

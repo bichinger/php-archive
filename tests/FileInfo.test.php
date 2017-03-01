@@ -5,7 +5,7 @@ class FileInfoTest extends PHPUnit_Framework_TestCase
 
     public function testDefaults()
     {
-        $fileinfo = new FileInfo('foobar');
+        $fileinfo = new SplitbrainFileInfo('foobar');
 
         $this->assertEquals('foobar', $fileinfo->getPath());
         $this->assertTrue($fileinfo->getMtime() > time() - 30);
@@ -41,7 +41,7 @@ class FileInfoTest extends PHPUnit_Framework_TestCase
 
         );
 
-        $fileinfo = new FileInfo();
+        $fileinfo = new SplitbrainFileInfo();
         foreach ($data as $test) {
             $fileinfo->setPath($test[0]);
             $this->assertEquals($test[1], $fileinfo->getPath());
@@ -50,7 +50,7 @@ class FileInfoTest extends PHPUnit_Framework_TestCase
 
     public function testStrip()
     {
-        $fileinfo = new FileInfo('foo/bar/baz/bang');
+        $fileinfo = new SplitbrainFileInfo('foo/bar/baz/bang');
         $this->assertEquals('foo/bar/baz/bang', $fileinfo->getPath());
 
         $fileinfo->strip(1);
@@ -59,7 +59,7 @@ class FileInfoTest extends PHPUnit_Framework_TestCase
         $fileinfo->strip(2);
         $this->assertEquals('bang', $fileinfo->getPath());
 
-        $fileinfo = new FileInfo('foo/bar/baz/bang');
+        $fileinfo = new SplitbrainFileInfo('foo/bar/baz/bang');
         $fileinfo->strip('nomatch');
         $this->assertEquals('foo/bar/baz/bang', $fileinfo->getPath());
 
@@ -69,7 +69,7 @@ class FileInfoTest extends PHPUnit_Framework_TestCase
 
     public function testMatch()
     {
-        $fileinfo = new FileInfo('foo/bar/baz/bang');
+        $fileinfo = new SplitbrainFileInfo('foo/bar/baz/bang');
 
         $this->assertTrue($fileinfo->match());
         $this->assertTrue($fileinfo->match('/bang/'));
